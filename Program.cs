@@ -1,3 +1,5 @@
 ﻿using System;
 
-Console.WriteLine("Hello, C#!");
+string[] digits= {"0","1","2","3","4","5","6","7","8","9"};
+string[] operators= {"/","-","*","+"};
+string[] digits= {"(",")"};
