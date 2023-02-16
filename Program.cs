@@ -17,3 +17,23 @@ foreach (char s in arithmetic expression)
 Console.WriteLine(s);
 }
 */
+
+do
+{
+  arithmetic_expression = Console.ReadLine();
+  foreach (char ch_exp in arithmetic expression)
+  {
+    i_unn = 0;
+    foreach (string str_unn in union)
+    {
+      if (ch_exp != char.Parse(str_unn))
+        i_unn = i_unn + 1;
+      if (i_unn == union.Count)
+      {
+        Console.WriteLine("Error. Enter another arithmetic expression");
+        arithmetic_expression = "";
+      }
+    }
+  }
+  
+} while (arithmetic_expression == "")
