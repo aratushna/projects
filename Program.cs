@@ -5,10 +5,10 @@ List<string> operators = new List<string>() {"/","-","*","+"};
 List<string> paranthesis = new List<string>() {"(",")"};
 List<string> separators = new List<string>() {" "};
 
-var union = digits.Concat(operators).Concat(paranthesis).Concat(separators).ToList();
+List<string> union = digits.Concat(operators).Concat(paranthesis).Concat(separators).ToList(); //all lists put together
 
 string? arithmetic_expression = "";
-int i_unn;
+int i_unn == 0;
 
 /*
 arithmetic_expression = Console.Readline();
@@ -20,6 +20,7 @@ Console.WriteLine(s);
 
 do
 {
+  Console.Write ("Enter an arithmetic expression");
   arithmetic_expression = Console.ReadLine();
   foreach (char ch_exp in arithmetic expression)
   {
