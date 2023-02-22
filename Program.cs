@@ -193,7 +193,7 @@ foreach (var ch_exp in arithmetic_expression.Select((value, index) => (value,ind
 
     while (stack_prn.Count != 0) result.Add(stack_prn.Pop());
 
-Console.WriteLine(“Reverse Polish Notation:");
+    Console.WriteLine(“Reverse Polish Notation:");
     foreach(var i_res in result) Console.Write(i_res + "   ");
     Console.WriteLine();
 
@@ -213,7 +213,7 @@ Console.WriteLine(“Reverse Polish Notation:");
                 break;
             
             case "operator":
-                double digit_1 = Convert.ToDouble(stack_calc.Pop());  //   ñòåêå íàêîäÿòñÿ Object. Íóæíî Object digital êîíâåðèðîâàòü â öèôðó double
+                double digit_1 = Convert.ToDouble(stack_calc.Pop()); 
                 double digit_2 = Convert.ToDouble(stack_calc.Pop());
         
                 switch (str_res) 
