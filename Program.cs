@@ -73,6 +73,186 @@ do
         if (i_aexp == arithmetic_expression.Length & dif_paran != 0) 
             if (dif_paran > 0) ch_err = '(';
                else ch_err = ')';
+        i_unn = 0;
+            foreach (string str_unn in union)
+            {
+                if (ch_exp != char.Parse(str_unn)) i_unn = i_unn + 1;
+                if (i_unn == union.Count) ch_err = ch_exp;
+            }
+          
+            if (ch_err != '\0')
+            {
+                Console.WriteLine("Wrong arithmetic expression")
+                ch_err = '\0'; 
+            }
+
+            ch_old = ch_exp; 
+
+        }
+    } while (arithmetic_expression == "");
+
+ArrayList tokens = new ArrayList();
+str_digits = string.Join("",digits);
+string str_oper_paran = string.Join("",operators_paranthesis);
+string str_digit = "";
+
+foreach (var ch_exp in arithmetic_expression.Select((value, index) => (value,index)))
+{
+    if (-1 != str_oper_paran.IndexOf(ch_exp.value))
+{ 
+    tokens.Add(ch_exp.value);
+}
+    else if (-1 != str_digits.IndexOf(ch_exp.value)) 
+    {
+       str_digit = str_digit + ch_exp.value.ToString();
+       if (ch_exp.index == arithmetic_expression.Length - 1) 
+       {
+           tokens.Add(int.Parse(str_digit)); 
+       }
+          else if(-1 == str_digits.IndexOf(arithmetic_expression[ch_exp.index+1]))
+          {
+              tokens.Add(int.Parse(str_digit)); 
+              str_digit = "";
+          }
+
+    }
+    else
+    {
+        Console.WriteLine();
+        Console.WriteLine("Error");
+        return; 
+    }
+    }
+
+    Console.WriteLine("Tokens recieved:");
+    foreach(var tok in tokens) Console.Write(tok + "   "); 
+    Console.WriteLine();
+
+    str_operators = string.Join("", operators);
+    string str_paranthesis = string.Join("", paranthesis);
+
+    string type_def(object data)
+    {
+        string type_def;
+        string str_data = Convert.ToString(data); 
+
+        if (data is int) type_def = "digital"; // true, çíà÷èò òèï int, òî åñòü digital
+          else if (-1 != str_operators.IndexOf(str_data)) type_def = "operator";
+            else if (-1 != str_paranthesis.IndexOf(str_data)) type_def = "parenthesis"; 
+              else type_def = "error"; 
+        return type_def;
+    }
+
+    ArrayList result = new ArrayList();
+    var stack_prn = new Stack();
+    string str_tok;
+    string str_type;
+
+    foreach (var tok in tokens)
+    {
+        str_tok = Convert.ToString(tok); 
+        str_type = type_def(tok); 
+
+        switch (str_type) 
+        {
+            case "digital":
+                result.Add(tok);
+                break;
+
+            case "operator":
+                while ((stack_prn.Count != 0) && (type_def(stack_prn.Peek()) == str_type) &&
+                       (operators_priorities[Convert.ToString(stack_prn.Peek())] >= operators_priorities[str_tok]))
+                {
+                    result.Add(stack_prn.Pop());
+                }
+
+                stack_prn.Push(tok); 
+                break;
+
+            case "parenthesis":
+                if (str_tok == "(") stack_prn.Push(str_tok);
+                if (str_tok == ")")
+                {
+                    var topstack_prn = stack_prn.Pop();
+                    while (!(topstack_prn.Equals("(")));
+                    {
+                        result.Add(topstack_prn);
+                        topstack_prn = stack_prn.Pop();
+                    }
+                }
+
+                break;
+
+            case "error":
+                Console.WriteLine();
+                Console.WriteLine("Errorì");
+                return; 
+                break;
+        }
+    }
+
+    while (stack_prn.Count != 0) result.Add(stack_prn.Pop());
+
+Console.WriteLine(“Reverse Polish Notation:");
+    foreach(var i_res in result) Console.Write(i_res + "   ");
+    Console.WriteLine();
+
+    var stack_calc = new Stack();
+    string str_res;
+    double calculation = 0;
+    
+    foreach (var res in result)
+    {
+        str_res = Convert.ToString(res);
+        str_type = type_def(res);
+        
+        switch (str_type)
+        {
+            case "digital":
+                stack_calc.Push(res); 
+                break;
+            
+            case "operator":
+                double digit_1 = Convert.ToDouble(stack_calc.Pop());  //   ñòåêå íàêîäÿòñÿ Object. Íóæíî Object digital êîíâåðèðîâàòü â öèôðó double
+                double digit_2 = Convert.ToDouble(stack_calc.Pop());
+        
+                switch (str_res) 
+                {
+                    case "^":
+                        calculation =Math.Pow(digit_2, digit_1);
+                        break;
+                    
+                    case "*":
+                        calculation = digit_2 * digit_1;
+                        break;
+                    
+                    case "/":
+                        calculation = digit_2 / digit_1;
+                        break;
+                    
+                    case "+":
+                        calculation = digit_2 + digit_1;
+                        break;
+                    
+                    case "-":
+                        calculation = digit_2 - digit_1;
+                        break;
+                }
+                stack_calc.Push(calculation); 
+                break;
+            
+            case "error":
+                Console.WriteLine();
+                Console.WriteLine("Error");
+                return; 
+                break;
+        }
+        
+    }
+ 
+ calculation = Convert.ToDouble(stack_calc.Pop()); 
+    Console.WriteLine("Calculations result:  " + calculation);
+
 /*
 do
 {
